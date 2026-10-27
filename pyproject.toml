@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thinvessel"
+version = "1.0.0"
+description = "Code of the paper 'Evaluating SAM-based and Convolutional Architectures in Thin Retinal Vessel Segmentation: Model Capacity, Computational Cost and Foundation Pre-training'"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Carlos Eduardo Fontaneli" },
+    { name = "Cesar H. Comin", email = "comin@ufscar.br" },
+]
+requires-python = ">=3.11"  # the pinned numpy, SciPy, scikit-image and pandas need 3.11+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+# Versions of the environment the paper's experiments ran in (Python 3.12.13, CUDA 12.8 wheels).
+dependencies = [
+    "torch==2.10.0",
+    "torchvision==0.25.0",
+    "pytorch-lightning==2.6.1",
+    "torchmetrics==1.8.2",
+    "monai==1.5.2",
+    "optuna==4.7.0",
+    "optuna-integration==4.7.0",
+    "timm==1.0.25",
+    "fvcore==0.1.5.post20221221",
+    "numpy==2.4.2",
+    "scipy==1.17.1",
+    "scikit-image==0.26.0",
+    "pandas==3.0.1",
+    "pillow==12.1.1",
+    "pyyaml==6.0.3",
+    "matplotlib==3.10.8",
+    "rich==14.3.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.0.3", "ruff==0.14.10", "pre-commit==4.3.0"]
+
+[project.urls]
+Repository = "https://github.com/CarlosFontaneli/thin-vessel-sam-cnn"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["src/thinvessel/models/third_party"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "UP006", "UP007", "UP035", "UP045",  # keep typing.Dict/List/Optional (the style of the experiments' code)
+    "B905",                              # zip() without strict=
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["thinvessel", "common"]
+
+[tool.ruff.format]
+exclude = ["src/thinvessel/models/third_party/**"]

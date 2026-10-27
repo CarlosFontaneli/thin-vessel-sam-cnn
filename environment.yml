@@ -1,0 +1,9 @@
+# Conda environment mirroring pyproject.toml (the experiments ran with Python 3.12.13 and these packages from pip).
+name: thinvessel
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - -e .[dev]

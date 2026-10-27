@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper below."
+title: "thin-vessel-sam-cnn: code of 'Evaluating SAM-based and Convolutional Architectures in Thin Retinal Vessel Segmentation'"
+type: software
+version: 1.0.0
+license: MIT
+authors:
+  - family-names: Fontaneli
+    given-names: Carlos Eduardo
+    affiliation: Federal University of São Carlos (UFSCar)
+  - family-names: Comin
+    given-names: Cesar H.
+    affiliation: Federal University of São Carlos (UFSCar)
+    email: comin@ufscar.br
+repository-code: https://github.com/CarlosFontaneli/thin-vessel-sam-cnn
+preferred-citation:
+  type: article
+  title: "Evaluating SAM-based and Convolutional Architectures in Thin Retinal Vessel Segmentation: Model Capacity, Computational Cost and Foundation Pre-training"
+  authors:
+    - family-names: Fontaneli
+      given-names: Carlos Eduardo
+    - family-names: Comin
+      given-names: Cesar H.
+  journal: "Computerized Medical Imaging and Graphics"
+  year: 2026
+  notes: "Submitted; volume, pages and DOI pending."

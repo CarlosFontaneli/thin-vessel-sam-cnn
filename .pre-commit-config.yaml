@@ -1,0 +1,18 @@
+# Linting and formatting with ruff (settings in pyproject.toml; the vendored third_party/ code is excluded there).
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.10
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: ^src/thinvessel/models/third_party/
+      - id: trailing-whitespace
+        exclude: ^src/thinvessel/models/third_party/

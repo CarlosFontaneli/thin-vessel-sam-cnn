@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.env
+
+# Tests and tools
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Data, weights and everything the code writes (never committed)
+/data/
+/weights/
+/outputs/
+*.ckpt
+*.pth
+*.pt
+*.db
+*.sqlite3
+*.npz
+lightning_logs/
+
+# LaTeX build files (make paper writes to outputs/paper; these cover a build inside paper/manuscript)
+paper/manuscript/*.aux
+paper/manuscript/*.bbl
+paper/manuscript/*.blg
+paper/manuscript/*.fdb_latexmk
+paper/manuscript/*.fls
+paper/manuscript/*.log
+paper/manuscript/*.out
+paper/manuscript/*.synctex.gz
+paper/manuscript/*Notes.bib
+paper/manuscript/main.pdf
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
