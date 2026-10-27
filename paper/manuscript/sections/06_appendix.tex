@@ -1,0 +1,65 @@
+\clearpage
+\appendix
+
+\section{Training details}
+\label{app:training}
+
+\subsection{Data preparation, sampling and augmentation}
+In 106 training masks and 5 test masks of FIVES, pixels along the image border were labelled as vessel; we set a 2~px border of these masks to background. Each training sample was taken from one training image with random horizontal and vertical flips (probability 0.5 each) and a random rotation between $-30^\circ$ and $30^\circ$. The sample was then cropped at a random position to the model's input size: 256~px for the CNNs, \litemedsam{} and the compact models, and 1024~px for \medsam{}. Images smaller than the input size, which is the case for DRIVE ($565 \times 584$~px) and VessMap ($256 \times 256$~px) with \medsam{}, were upscaled to it instead, with bilinear interpolation for the image and nearest-exact interpolation for the mask, which keeps the mask binary.
+
+\subsection{Loss function}
+All models were trained with the soft Dice loss with squared terms in the denominator~\cite{milletari2016vnet},
+\begin{equation}
+    \mathcal{L}_{\text{Dice}}(Y, \hat{Y}) = 1 - \frac{2 \sum_{i,j} Y_{i,j} \hat{Y}_{i,j} + \epsilon}{\sum_{i,j} Y_{i,j}^2 + \sum_{i,j} \hat{Y}_{i,j}^2 + \epsilon},
+    \label{eq:dice_loss}
+\end{equation}
+where $\hat{Y}$ is the sigmoid output and $\epsilon = 10^{-5}$, computed for each image and averaged over the batch. \lwnet{} produces a coarse and a refined segmentation; its loss is the sum of Eq.~\eqref{eq:dice_loss} for the two outputs.
+
+\subsection{Hyperparameter search}
+Table~\ref{tab:search_space} lists the search of each configuration and dataset, and Table~\ref{tab:compact_models} the architectures of the compact models. Every run used AdamW with a cosine learning-rate schedule~\cite{loshchilov2017sgdr} over at most 1000 epochs.
+
+We ran the searches with Optuna~\cite{akiba2019optuna} (version 4.7.0), using its tree-structured Parzen estimator sampler~\cite{bergstra2011algorithms} and median pruning on the validation Dice. For the compact models the search also covered the architecture: the patch size, embedding dimension, depth, number of heads, MLP ratio and attention window of compact \medsam{}, and the per-stage widths and depths of compact \litemedsam{}. It selected one compact model per dataset (Table~\ref{tab:compact_models}); Table~\ref{tab:patch_size} gives the best validation Dice the search reached with each patch size. Fine-tuned and from-scratch runs of a transformer-based model share the architecture and therefore the cost. In total, the 36 searches ran 3,602 trials in 2,093 GPU hours (the sum of the trial durations, one GPU per trial). The CNNs were trained on an NVIDIA RTX 3090 GPU and the transformer-based models on NVIDIA RTX PRO 5000 (48~GB) and RTX PRO 4000 (24~GB) GPUs.
+
+For the CNNs, the search covered one architecture parameter each (Table~\ref{tab:search_space}). For \lwnet{} (first-level width) and \convunext{} (base width), it sets the size of the model; it was searched on DRIVE, FIVES and VessMap and fixed on HRF. The selected \lwnet{} has a first width of 8 on every dataset (0.07~M parameters), and the selected \convunext{} a base width of 64 on DRIVE and VessMap (13.8~M) and 32 on HRF and FIVES (3.5~M). The stochastic-depth rate of \convnext{} does not change its size (211.4~M).
+
+Validation runs the sliding-window inference over the full validation images. To reduce the training time spent on it, we validated every 10 epochs on HRF, for every compact model, and for the transformer-based models on FIVES; we validated every epoch for the other runs on DRIVE and VessMap and for \lwnet{} and \convunext{} on FIVES. The early-stopping patience was 5 validations when validating every 10 epochs and 50 when validating every epoch, so training stopped after 50 epochs without improvement in both cases. The interval of 10 epochs was introduced while the FIVES searches of \convnext{} and fine-tuned \litemedsam{} were running: their first 2 and 15 trials, which include the selected runs, were validated every epoch, and the later ones every 10 epochs.
+
+For \medsam{} on DRIVE and VessMap, validation used the padded protocol of Section~\ref{subsec:method_metrics}, the native image padded to the 1024~px window, while every test result of \medsam{} uses the upscaled protocol. The checkpoints of these runs were therefore selected, and their epochs in Fig.~\ref{fig:convergence} measured, under the padded protocol, which cannot be changed without retraining.
+
+Within a trial we kept the checkpoint with the highest validation Dice, and for each configuration we report the trial with the highest validation Dice among the trials that finished.
+
+\input{figures/tabA1_search_space}
+\input{figures/tabA2_compact_models}
+\input{figures/tabA3_patch_size}
+
+\section{Detailed results}
+\label{app:results_detail}
+
+This appendix gives details behind Section~\ref{sec:results_discussion} that the tables and figures do not show. Verdicts come from the tests of Appendix~\ref{app:statistics}.
+
+\subsection{Overall performance and the literature}
+The published protocols of Little W-Net differ from ours: it was trained and validated on 15 HRF images downsampled to 1024~px, binarized with the threshold that maximizes Dice on the training set, and scored over the pixels of all test images inside the field of view~\cite{galdran2020littlewnetcouldstateoftheart}. We binarized at 0.5 and averaged the Dice of full images. The FIVES values come from models trained with a combined Dice and cross-entropy loss~\cite{fadugba2024benchmarking}.
+
+\subsection{Thin vessels}
+Table~\ref{tab:pvalues} gives the tests behind the thin-vessel comparisons of Section~\ref{subsec:results_thin}.
+
+\subsection{Cost and the compact models}
+\medsam{} covers a DRIVE or VessMap image with one 1024~px window but needs 15 windows for an HRF image and 9 for a FIVES image; the models with 256~px windows need 9 windows on DRIVE, 216 on HRF, 121 on FIVES and 1 on VessMap.
+
+The values of compact \medsam{} are in Table~\ref{tab:compact_models} and its tests against each CNN in Table~\ref{tab:pvalues}. On DRIVE its Dice was significantly lower than that of \convunext{}, although its mean is higher, because \convunext{}'s mean is lowered by its failed image. Against \medsam{} trained from scratch, which also lacks pre-training, its $\thinrecall$ was significantly higher on DRIVE and VessMap, significantly lower on FIVES and not significantly different on HRF.
+
+On DRIVE, 2~px patches ran out of GPU memory in a test run before the search and were left out of it (Table~\ref{tab:patch_size}).
+
+\subsection{Pre-training and training difficulty}
+\input{figures/tab04_pretraining_gain}
+
+In the order of the number of training images (DRIVE, HRF, VessMap, FIVES), the gains of \litemedsam{} (Table~\ref{tab:pretraining_gain}) were larger on each of the three smaller datasets in turn, and not smallest on FIVES. The $\thinrecall$ gain of \medsam{} was largest on DRIVE and VessMap, the two datasets it saw upscaled, an order that does not follow the number of training images.
+
+\section{Statistical tests}
+\label{app:statistics}
+\input{figures/tabA4_pvalues}
+
+Tables~\ref{tab:pvalues} and \ref{tab:pvalues_other} list the Holm-adjusted p-value of every pairwise comparison described in Section~\ref{subsec:method_metrics}.
+Every model was evaluated on the same test images of a dataset, so we compared models through their per-image paired differences. The p-values were computed from the exact null distribution of the signed-rank statistic for up to 50 image pairs without zero differences, and from its normal approximation otherwise (FIVES, and 27 tests on HRF and VessMap); zero differences were discarded (SciPy~\cite{virtanen2020scipy}, version 1.17.1). The direction marks of Tables~\ref{tab:pvalues} and~\ref{tab:pvalues_other} follow the sign of the Hodges--Lehmann estimate~\cite{hodges1963estimates} of the paired difference, the median of the averages of all pairs of per-image differences. An image with an undefined value is left out of the pairs that involve it (one image, Table~\ref{tab:padding}).
+
+\clearpage
