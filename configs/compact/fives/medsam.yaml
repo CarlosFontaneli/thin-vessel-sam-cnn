@@ -1,0 +1,71 @@
+# compact / fives / medsam: settings of the selected trial (77) of the hyperparameter search,
+# as recorded in its trial_77/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: medsam
+dataset_name: fives
+selected_trial: 77
+model_params:
+  freeze_image_encoder: false
+  medsam_params:
+    mask_decoder_params: {iou_head_depth: 3, iou_head_hidden_dim: 256, num_multimask_outputs: 3, transformer_dim: 256}
+    prompt_encoder_params:
+      embed_dim: 256
+      image_embedding_size: [32, 32]
+      input_image_size: [256, 256]
+      mask_in_chans: 16
+    transformer_params: {depth: 2, embedding_dim: 256, mlp_dim: 2048, num_heads: 8}
+    vit_b_params:
+      depth: 8
+      embed_dim: 256
+      global_attn_indexes: [1, 3, 5]
+      img_size: 256
+      in_chans: 3
+      mlp_ratio: 6.0
+      num_heads: 8
+      out_chans: 256
+      patch_size: 8
+      qkv_bias: true
+      use_rel_pos: true
+      window_size: 7
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 16
+  image_size: 256
+  num_workers: 8
+  persistent_workers: true
+  test_image_dir: FIVES/test/Original
+  test_mask_dir: FIVES/test/Ground truth
+  train_image_dir: FIVES/train/Original
+  train_mask_dir: FIVES/train/Ground truth
+  allow_test_as_val: true
+training_params: {check_val_every_n_epoch: 10, lr: 5.550797423994455e-05, max_epochs: 1000, optimizer: AdamW, patience: 5,
+  roi_size: 256, weight_decay: 0.00011474344318459465}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD]
+  lr: {type: float, low: 1.0e-07, high: 0.001, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  batch_size:
+    type: categorical
+    choices: [4, 8, 16]
+  embed_dim:
+    type: categorical
+    choices: [128, 256, 384]
+  depth:
+    type: categorical
+    choices: [4, 6, 8]
+  num_heads:
+    type: categorical
+    choices: [4, 8]
+  patch_size:
+    type: categorical
+    choices: [1, 2, 4, 8, 16]
+  mlp_ratio:
+    type: categorical
+    choices: [2.0, 4.0, 6.0]
+  window_size:
+    type: categorical
+    choices: [7, 14]

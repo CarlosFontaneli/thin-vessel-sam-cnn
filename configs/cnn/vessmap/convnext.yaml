@@ -1,0 +1,43 @@
+# cnn / vessmap / convnext: settings of the selected trial (57) of the hyperparameter search,
+# as recorded in its trial_57/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: convnext
+dataset_name: vessmap
+selected_trial: 57
+model_params:
+  convnext_params:
+    decoder_params:
+      decoder_channels: [512, 128]
+      kernel_sizes: [4, 4, 2]
+      strides: [4, 4, 2]
+    encoder_params:
+      depths: [3, 3, 27, 3]
+      dims: [192, 384, 768, 1536]
+  drop_path_rate: 0.4858226382446968
+  in_c: 3
+  n_classes: 1
+  pretrained: false
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 2
+  image_dir: VessMAP/images
+  image_size: 256
+  mask_dir: VessMAP/labels
+  num_workers: 4
+  train_size: 0.7
+training_params: {lr: 0.00019183727415949322, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256, weight_decay: 0.00011520877721043991}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD]
+  lr: {type: float, low: 1.0e-05, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-05, high: 0.1, log: true}
+  patience:
+    type: categorical
+    choices: [50, 30]
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8, 16, 32]
+  drop_path_rate: {type: float, low: 0.0, high: 0.5, log: false}

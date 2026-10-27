@@ -1,0 +1,52 @@
+# scratch / vessmap / medsam: settings of the selected trial (4) of the hyperparameter search,
+# as recorded in its trial_4/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: medsam
+dataset_name: vessmap
+selected_trial: 4
+model_params:
+  freeze_image_encoder: false
+  medsam_params:
+    mask_decoder_params: {iou_head_depth: 3, iou_head_hidden_dim: 256, num_multimask_outputs: 3, transformer_dim: 256}
+    prompt_encoder_params:
+      embed_dim: 256
+      image_embedding_size: [64, 64]
+      input_image_size: [1024, 1024]
+      mask_in_chans: 16
+    transformer_params: {depth: 2, embedding_dim: 256, mlp_dim: 2048, num_heads: 8}
+    vit_b_params:
+      depth: 12
+      embed_dim: 768
+      global_attn_indexes: [2, 5, 8, 11]
+      img_size: 1024
+      in_chans: 3
+      mlp_ratio: 4.0
+      num_heads: 12
+      out_chans: 256
+      patch_size: 16
+      qkv_bias: true
+      use_rel_pos: true
+      window_size: 14
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 1
+  image_dir: VessMAP/images
+  image_size: 1024
+  mask_dir: VessMAP/labels
+  num_workers: 4
+  train_size: 0.7
+training_params: {lr: 3.972110727381908e-05, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 1024, weight_decay: 0.0011400863701127321}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD]
+  lr: {type: float, low: 1.0e-05, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-05, high: 0.1, log: true}
+  patience:
+    type: categorical
+    choices: [50, 30]
+  batch_size:
+    type: categorical
+    choices: [1]

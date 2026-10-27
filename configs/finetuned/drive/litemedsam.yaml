@@ -1,0 +1,59 @@
+# finetuned / drive / litemedsam: settings of the selected trial (21) of the hyperparameter search,
+# as recorded in its trial_21/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: litemedsam
+dataset_name: drive
+selected_trial: 21
+model_params:
+  litemedsam_params:
+    mask_decoder_params: {iou_head_depth: 3, iou_head_hidden_dim: 256, num_multimask_outputs: 3, transformer_dim: 256}
+    prompt_encoder_params:
+      embed_dim: 256
+      image_embedding_size: [64, 64]
+      input_image_size: [256, 256]
+      mask_in_chans: 16
+    tiny_vit_params:
+      depths: [2, 2, 6, 2]
+      downsample_strides: [2, 2, 1]
+      drop_path_rate: 0.2
+      drop_rate: 0.0
+      embed_dims: [64, 128, 160, 320]
+      encoder_embed_dim: 256
+      img_size: 256
+      in_chans: 3
+      layer_lr_decay: 0.8
+      local_conv_size: 3
+      mbconv_expand_ratio: 4.0
+      mlp_ratio: 4.0
+      num_heads: [2, 4, 5, 10]
+      use_checkpoint: false
+      window_sizes: [7, 7, 14, 7]
+    transformer_params: {depth: 2, embedding_dim: 256, mlp_dim: 2048, num_heads: 8}
+  pretrained_weights_path: lite_medsam.pth
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 4
+  image_size: 256
+  num_workers: 4
+  test_csv: ../../splits/drive_test.csv
+  test_image_dir: DRIVE/test/images
+  test_mask_dir: DRIVE/test/1st_manual
+  train_csv: ../../splits/drive_train.csv
+  train_image_dir: DRIVE/training/images
+  train_mask_dir: DRIVE/training/1st_manual
+  val_csv: ../../splits/drive_val.csv
+  val_image_dir: DRIVE/training/images
+  val_mask_dir: DRIVE/training/1st_manual
+training_params: {lr: 0.0002483947924838196, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256, weight_decay: 9.07057846380528e-06}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD, torch.optim.RMSprop]
+  lr: {type: float, low: 1.0e-06, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  patience: {type: int, low: 20, high: 100}
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8]

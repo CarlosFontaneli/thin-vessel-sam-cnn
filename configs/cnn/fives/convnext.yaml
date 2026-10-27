@@ -1,0 +1,45 @@
+# cnn / fives / convnext: settings of the selected trial (0) of the hyperparameter search,
+# as recorded in its trial_0/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+# The original search validated trials 0-1 every epoch (patience 50) and trials 2-101 every 10 epochs
+# (check_val_every_n_epoch: 10, patience: 5); this file holds the settings of the selected trial 0.
+seed: 42
+model_name: convnext
+dataset_name: fives
+selected_trial: 0
+model_params:
+  convnext_params:
+    decoder_params:
+      decoder_channels: [512, 128]
+      kernel_sizes: [4, 4, 2]
+      strides: [4, 4, 2]
+    encoder_params:
+      depths: [3, 3, 27, 3]
+      dims: [192, 384, 768, 1536]
+  drop_path_rate: 0.48495492608099716
+  in_c: 3
+  n_classes: 1
+  pretrained: false
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 4
+  image_size: 256
+  num_workers: 2
+  test_image_dir: FIVES/test/Original
+  test_mask_dir: FIVES/test/Ground truth
+  train_image_dir: FIVES/train/Original
+  train_mask_dir: FIVES/train/Ground truth
+  allow_test_as_val: true
+training_params: {lr: 0.0002481040974867811, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256, weight_decay: 6.026889128682509e-06}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD, torch.optim.RMSprop]
+  lr: {type: float, low: 1.0e-06, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  patience: {type: int, low: 20, high: 100}
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8, 16, 32]
+  drop_path_rate: {type: float, low: 0.0, high: 0.5, log: false}

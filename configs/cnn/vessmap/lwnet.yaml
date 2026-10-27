@@ -1,0 +1,34 @@
+# cnn / vessmap / lwnet: settings of the selected trial (82) of the hyperparameter search,
+# as recorded in its trial_82/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: lwnet
+dataset_name: vessmap
+selected_trial: 82
+model_params: {in_c: 3, layers: '[8, 16, 32]', n_classes: 1}
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 4
+  image_dir: VessMAP/images
+  image_size: 256
+  mask_dir: VessMAP/labels
+  num_workers: 4
+  train_size: 0.7
+training_params: {deep_sup_weight: 1.0, lr: 0.004198268895963677, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256,
+  weight_decay: 1.9484042195134182e-05}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD]
+  lr: {type: float, low: 1.0e-05, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-05, high: 0.1, log: true}
+  patience:
+    type: categorical
+    choices: [50, 30]
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8, 16, 32]
+  layers:
+    type: categorical
+    choices: ['[8, 16, 32]', '[16, 32, 64]', '[32, 64, 128]']

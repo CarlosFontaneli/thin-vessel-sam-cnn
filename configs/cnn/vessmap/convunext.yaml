@@ -1,0 +1,33 @@
+# cnn / vessmap / convunext: settings of the selected trial (2) of the hyperparameter search,
+# as recorded in its trial_2/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: convunext
+dataset_name: vessmap
+selected_trial: 2
+model_params: {base_c: 64, bilinear: true, in_c: 3, n_classes: 1}
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 2
+  image_dir: VessMAP/images
+  image_size: 256
+  mask_dir: VessMAP/labels
+  num_workers: 4
+  train_size: 0.7
+training_params: {lr: 0.0006647135865318024, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256, weight_decay: 4.809461967501571e-05}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD]
+  lr: {type: float, low: 1.0e-05, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-05, high: 0.1, log: true}
+  patience:
+    type: categorical
+    choices: [50, 30]
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8, 16, 32]
+  base_c:
+    type: categorical
+    choices: [16, 32, 64]

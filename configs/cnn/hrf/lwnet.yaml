@@ -1,0 +1,32 @@
+# cnn / hrf / lwnet: settings of the selected trial (4) of the hyperparameter search,
+# as recorded in its trial_4/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: lwnet
+dataset_name: hrf
+selected_trial: 4
+model_params:
+  in_c: 3
+  layers: [8, 16, 32]
+  n_classes: 1
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 8
+  image_dir: HRF/images
+  image_size: 256
+  mask_dir: HRF/manual1
+  num_workers: 16
+  train_size: 0.7
+training_params: {check_val_every_n_epoch: 10, deep_sup_weight: 1.0, lr: 0.035204810455260416, max_epochs: 1000, optimizer: AdamW,
+  patience: 5, roi_size: 256, weight_decay: 1.9674328025306114e-05}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD, torch.optim.RMSprop]
+  lr: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  patience: {type: int, low: 20, high: 100}
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8, 16]

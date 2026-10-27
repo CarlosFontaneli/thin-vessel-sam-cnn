@@ -1,0 +1,69 @@
+# compact / hrf / medsam: settings of the selected trial (0) of the hyperparameter search,
+# as recorded in its trial_0/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: medsam
+dataset_name: hrf
+selected_trial: 0
+model_params:
+  freeze_image_encoder: false
+  medsam_params:
+    mask_decoder_params: {iou_head_depth: 3, iou_head_hidden_dim: 256, num_multimask_outputs: 3, transformer_dim: 256}
+    prompt_encoder_params:
+      embed_dim: 256
+      image_embedding_size: [64, 64]
+      input_image_size: [256, 256]
+      mask_in_chans: 16
+    transformer_params: {depth: 2, embedding_dim: 256, mlp_dim: 2048, num_heads: 8}
+    vit_b_params:
+      depth: 6
+      embed_dim: 128
+      global_attn_indexes: [1, 3, 5]
+      img_size: 256
+      in_chans: 3
+      mlp_ratio: 2.0
+      num_heads: 4
+      out_chans: 256
+      patch_size: 4
+      qkv_bias: true
+      use_rel_pos: true
+      window_size: 14
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 4
+  image_dir: HRF/images
+  image_size: 256
+  mask_dir: HRF/manual1
+  num_workers: 16
+  persistent_workers: true
+  train_size: 0.7
+training_params: {check_val_every_n_epoch: 10, lr: 8.471801418819978e-05, max_epochs: 1000, optimizer: AdamW, patience: 5,
+  roi_size: 256, weight_decay: 0.0009846738873614568}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD]
+  lr: {type: float, low: 1.0e-07, high: 0.001, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  batch_size:
+    type: categorical
+    choices: [4, 8, 16]
+  embed_dim:
+    type: categorical
+    choices: [128, 256, 384]
+  depth:
+    type: categorical
+    choices: [4, 6, 8]
+  num_heads:
+    type: categorical
+    choices: [4, 8]
+  patch_size:
+    type: categorical
+    choices: [1, 2, 4, 8, 16]
+  mlp_ratio:
+    type: categorical
+    choices: [2.0, 4.0, 6.0]
+  window_size:
+    type: categorical
+    choices: [7, 14]

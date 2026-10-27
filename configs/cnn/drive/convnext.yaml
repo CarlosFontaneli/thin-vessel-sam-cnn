@@ -1,0 +1,47 @@
+# cnn / drive / convnext: settings of the selected trial (0) of the hyperparameter search,
+# as recorded in its trial_0/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: convnext
+dataset_name: drive
+selected_trial: 0
+model_params:
+  convnext_params:
+    decoder_params:
+      decoder_channels: [512, 128]
+      kernel_sizes: [4, 4, 2]
+      strides: [4, 4, 2]
+    encoder_params:
+      depths: [3, 3, 27, 3]
+      dims: [192, 384, 768, 1536]
+  drop_path_rate: 0.35403628889802274
+  in_c: 3
+  n_classes: 1
+  pretrained: false
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 4
+  image_size: 256
+  num_workers: 4
+  test_csv: ../../splits/drive_test.csv
+  test_image_dir: DRIVE/test/images
+  test_mask_dir: DRIVE/test/1st_manual
+  train_csv: ../../splits/drive_train.csv
+  train_image_dir: DRIVE/training/images
+  train_mask_dir: DRIVE/training/1st_manual
+  val_csv: ../../splits/drive_val.csv
+  val_image_dir: DRIVE/training/images
+  val_mask_dir: DRIVE/training/1st_manual
+training_params: {lr: 0.0002481040974867811, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256, weight_decay: 6.026889128682509e-06}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD, torch.optim.RMSprop]
+  lr: {type: float, low: 1.0e-06, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  patience: {type: int, low: 20, high: 100}
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8]
+  drop_path_rate: {type: float, low: 0.0, high: 0.5, log: false}

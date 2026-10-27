@@ -1,0 +1,37 @@
+# cnn / drive / convunext: settings of the selected trial (10) of the hyperparameter search,
+# as recorded in its trial_10/config.yaml, and the search space as recorded in the Optuna study
+# (key order = order of the suggest calls). Schema: configs/README.md.
+seed: 42
+model_name: convunext
+dataset_name: drive
+selected_trial: 10
+model_params: {base_c: 64, bilinear: true, in_c: 3, n_classes: 1}
+dataset_params:
+  augment: true
+  augmentations: {hflip_prob: 0.5, rotation_degrees: 30.0, vflip_prob: 0.5}
+  batch_size: 2
+  image_size: 256
+  num_workers: 4
+  test_csv: ../../splits/drive_test.csv
+  test_image_dir: DRIVE/test/images
+  test_mask_dir: DRIVE/test/1st_manual
+  train_csv: ../../splits/drive_train.csv
+  train_image_dir: DRIVE/training/images
+  train_mask_dir: DRIVE/training/1st_manual
+  val_csv: ../../splits/drive_val.csv
+  val_image_dir: DRIVE/training/images
+  val_mask_dir: DRIVE/training/1st_manual
+training_params: {lr: 0.00472592145648153, max_epochs: 1000, optimizer: AdamW, patience: 50, roi_size: 256, weight_decay: 0.0014214065271777494}
+search_space:
+  optimizer:
+    type: categorical
+    choices: [torch.optim.AdamW, torch.optim.SGD, torch.optim.RMSprop]
+  lr: {type: float, low: 1.0e-06, high: 0.01, log: true}
+  weight_decay: {type: float, low: 1.0e-06, high: 0.1, log: true}
+  patience: {type: int, low: 20, high: 100}
+  batch_size:
+    type: categorical
+    choices: [2, 4, 8]
+  base_c:
+    type: categorical
+    choices: [16, 32, 64]
