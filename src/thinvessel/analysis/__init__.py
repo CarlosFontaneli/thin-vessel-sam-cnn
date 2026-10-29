@@ -1,1 +1,1 @@
-"""Producers of the inputs of the figures and tables: cost, convergence and search records."""
+"""Cost, convergence and search records: the tables in ``results/`` besides the per-image metrics."""

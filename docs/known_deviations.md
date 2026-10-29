@@ -114,16 +114,11 @@ reproduces every recorded `trial_<n>/config.yaml` except the failed trial 0 of D
     configuration was trained. Inference with the original checkpoints on another GPU (RTX 3060) differed from the
     saved masks of the paper by at most 22 pixels per image for LW-Net, ConvUNeXt and LiteMedSAM, and by 0 pixels
     for the predictions made on that GPU; the release and the experiments' code give identical masks on the same GPU.
-18. **Float parsing of the tables.** The paper's figure and table scripts read the per-image metrics, the tests
-    and the convergence summary from CSV with pandas' default float parser, and the per-image values of Table IV,
-    the cost and the search records from parquet, JSON and SQLite. The released scripts parse each table the same
-    way (`paper/figures_tables/common.read_table`), so that every printed and plotted value is bit-identical to the
-    paper; parsing the CSVs exactly changes some means in the last digit.
 
 ## Metrics
 
-19. An empty prediction scores 0 for the centerline recall and precision and for the recall of every radius bin
+18. An empty prediction scores 0 for the centerline recall and precision and for the recall of every radius bin
     with ground-truth pixels, but NaN (undefined, left out of the means) for the thin-vessel precision; one image
     has an undefined thin-vessel precision (VessMap, MedSAM from scratch, padded protocol).
-20. The first radius bin also takes radii below 0.5 px and the last bin radii above its upper edge (100 px), so the
+19. The first radius bin also takes radii below 0.5 px and the last bin radii above its upper edge (100 px), so the
     bins cover every centerline pixel.

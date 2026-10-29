@@ -65,7 +65,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["thinvessel", "common"]
+known-first-party = ["thinvessel"]
 
 [tool.ruff.format]
 exclude = ["src/thinvessel/models/third_party/**"]

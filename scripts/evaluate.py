@@ -4,7 +4,7 @@
 
 Reads ``<outputs>/predictions/<regime>/<dataset>/<model>/{native,upscaled}/``. The table has one row
 per dataset, configuration, protocol and test image, with every metric of the paper (columns:
-``thinvessel.evaluation.metrics.score_pair``). It is the input of the statistics and of the figures.
+``thinvessel.evaluation.metrics.score_pair``), from which the paper's results are computed.
 """
 
 import argparse

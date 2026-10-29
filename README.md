@@ -6,8 +6,8 @@ Our paper tests how far that holds: it compares MedSAM and LiteMedSAM, two Segme
 images, with three convolutional networks on four datasets (DRIVE, HRF, FIVES and VessMap), looking at thin vessels
 in particular.
 
-This repository has the code to reproduce the paper's experiments, from training the models to every figure and
-table.
+This repository has the code to reproduce the paper's experiments, from training the models to the per-image
+metrics behind its results.
 
 > **Evaluating SAM-based and Convolutional Architectures in Thin Retinal Vessel Segmentation: Model Capacity,
 > Computational Cost and Foundation Pre-training.** Carlos E. Fontaneli and Cesar H. Comin, Federal University of
@@ -47,11 +47,9 @@ git clone https://github.com/CarlosFontaneli/thin-vessel-sam-cnn.git && cd thin-
 python -m venv .venv && source .venv/bin/activate
 make install          # Python 3.11 or newer
 make test             # unit tests, about ten seconds on CPU
-make figures          # every figure and table of the paper, from the tables in results/
-make paper            # compiles the paper into outputs/paper/main.pdf (needs TeX Live)
 ```
 
-The figures and tables need neither the datasets nor a GPU. To train the models and evaluate them yourself, see
+To train the models and evaluate them yourself, see
 [`docs/data.md`](docs/data.md) for the datasets and weights and [`docs/reproduction.md`](docs/reproduction.md) for
 the commands.
 
@@ -61,14 +59,12 @@ the commands.
 - `configs/`: one configuration per model and dataset, with the hyperparameters used in the paper
 - `scripts/`: the command-line tools, from training to scoring
 - `results/`: the tables behind the paper's numbers
-- `paper/`: the LaTeX source of the paper and the scripts of its figures and tables
 - `docs/`: data, reproduction and hyperparameter details
 
 ## Licence
 
 The code is under the MIT licence ([`LICENSE`](LICENSE)); vendored code keeps its own licence
-([`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)). The text and figures of the paper are not covered by the MIT
-licence (see [`paper/README.md`](paper/README.md)).
+([`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)).
 
 ## Citation
 

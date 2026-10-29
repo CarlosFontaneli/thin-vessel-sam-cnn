@@ -1,4 +1,4 @@
-"""Produces the cost, convergence and search-record tables that the figures and tables read.
+"""Produces the cost, convergence and search-record tables of the paper (``results/``).
 
     python scripts/analyse.py [--steps cost convergence search] [--output-dir results]
 

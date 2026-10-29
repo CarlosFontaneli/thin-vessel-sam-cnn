@@ -15,5 +15,4 @@ and `--help`. Full commands, costs and the loop over the 36 configurations: [`..
 
 `<config>` is `configs/<regime>/<dataset>/<model>.yaml` and `<study>` is `<regime>/<dataset>/<model>`. MedSAM on
 DRIVE and VessMap is predicted with `--protocol upscaled`, the protocol of every MedSAM result on these datasets in
-the paper. Write the last two outputs to `results/` (`--output results/per_image_metrics.csv`,
-`--output-dir results`) to plot your own runs with `make figures`.
+the paper. Compare the tables of your own runs with those of the paper's runs in `results/`.

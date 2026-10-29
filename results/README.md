@@ -1,7 +1,7 @@
 # Results tables
 
-The inputs of every number, figure, table and p-value of the paper, from the paper's own runs. `make figures` reads
-them; the scripts that write them are named below. Values are fractions (not %) unless stated.
+The tables behind the paper's numbers, from the paper's own runs. The scripts that write them are named below.
+Values are fractions (not %) unless stated.
 
 Configuration ids: `lwnet_scratch`, `convunext_scratch`, `convnext_scratch` (CNNs, from scratch);
 `litemedsam_pretrained`, `medsam_pretrained` (fine-tuned); `litemedsam_scratch`, `medsam_scratch` (from scratch);

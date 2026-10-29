@@ -26,18 +26,6 @@ htmlcov/
 *.npz
 lightning_logs/
 
-# LaTeX build files (make paper writes to outputs/paper; these cover a build inside paper/manuscript)
-paper/manuscript/*.aux
-paper/manuscript/*.bbl
-paper/manuscript/*.blg
-paper/manuscript/*.fdb_latexmk
-paper/manuscript/*.fls
-paper/manuscript/*.log
-paper/manuscript/*.out
-paper/manuscript/*.synctex.gz
-paper/manuscript/*Notes.bib
-paper/manuscript/main.pdf
-
 # Editors and OS
 .idea/
 .vscode/

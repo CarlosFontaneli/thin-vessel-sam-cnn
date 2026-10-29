@@ -32,7 +32,7 @@ MODELS = ("lwnet", "convunext", "convnext", "litemedsam", "medsam")
 # Regime of a configuration = name of its folder under configs/.
 REGIMES = ("cnn", "finetuned", "scratch", "compact")
 
-# Configuration id used in the per-image tables, the figures and the statistics, per (regime, model).
+# Configuration id used in the per-image tables, per (regime, model).
 _CONFIGURATION_IDS: Dict[tuple, str] = {
     ("cnn", "lwnet"): "lwnet_scratch",
     ("cnn", "convunext"): "convunext_scratch",
