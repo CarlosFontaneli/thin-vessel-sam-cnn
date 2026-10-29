@@ -81,18 +81,3 @@ seed for its augmentation; data-loader workers are spawned. cuDNN and GPU arithm
 paper's runs used several GPU types, so a retrained model differs from the paper's. Each configuration was trained
 once. With the original checkpoints, this code and the experiments' code give identical predictions on the same GPU;
 on another GPU they differed by at most 22 pixels per test image.
-
-## Verification of this release
-
-Run before release against the records of the paper's runs (private experiments repository):
-
-| Check | Result |
-|---|---|
-| Per-image metrics recomputed from the saved test predictions | identical to the paper's for all 2,476 rows and every metric (maximum difference 0) |
-| Configurations vs the selected trials' `trial_<n>/config.yaml` | 36/36 identical up to the documented path and key changes |
-| Search mapping replayed on every recorded trial | 3,611 of 3,612 configurations reproduced (the other: a documented failed trial) |
-| Parameters and FLOPs of the 36 architectures | equal to the measurements on the trained checkpoints |
-| Statistical tests (`all_tests.csv`, `summary.csv`) | byte-identical |
-| Plotted values of the 15 figures and tables | byte-identical |
-| Predictions with the original checkpoints | identical masks for MedSAM (upscaled), ≤ 22 px per image elsewhere (other GPU) |
-| Paper compiled from `paper/manuscript/` | 18 pages, pixel-identical to the build of the authors' manuscript except the code-availability URL (page 11) |

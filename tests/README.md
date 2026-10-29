@@ -9,6 +9,3 @@ seconds.
 | `test_data.py` | crop or upscale of training samples, DRIVE mask names, the FIVES border correction, the HRF/VessMap split sizes |
 | `test_models.py` | parameter counts of Table I and of compact models, forward shapes, sliding windows per image (also against MONAI) |
 | `test_config.py` | all 36 configurations load and are consistent (AdamW, 1000 epochs, 50-epoch patience), path resolution, the search mapping (`optimizer` and `patience` not applied) |
-
-The checks against the records of the paper's runs (metrics, configurations, figures, statistics) need the private
-experiment outputs and are described in [`../docs/reproduction.md`](../docs/reproduction.md#verification-of-this-release).

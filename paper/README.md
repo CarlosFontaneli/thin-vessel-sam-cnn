@@ -61,5 +61,5 @@ filled). Tables give mean ± standard deviation (ddof = 1) over the test images 
 ## Licence of the paper
 
 The MIT licence of the repository covers the code, not the paper. The text and figures of the paper (`manuscript/`)
-are © 2026 the authors; all rights reserved. The paper was submitted to *Computerized Medical Imaging and Graphics*;
-after publication, cite the published version.
+are © 2026 the authors; all rights reserved. The paper is under review; after publication, cite the published
+version.

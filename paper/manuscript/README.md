@@ -1,6 +1,6 @@
 # LaTeX source of the paper
 
-The paper as submitted to *Computerized Medical Imaging and Graphics* (`revtex4-1`), with its comments removed.
+The paper as submitted for publication (`revtex4-1`), with its comments removed.
 
 ```
 main.tex          preamble, title, authors, abstract; inputs the sections

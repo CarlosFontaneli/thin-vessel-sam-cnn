@@ -9,7 +9,7 @@ description = "Code of the paper 'Evaluating SAM-based and Convolutional Archite
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Carlos Eduardo Fontaneli" },
+    { name = "Carlos E. Fontaneli" },
     { name = "Cesar H. Comin", email = "comin@ufscar.br" },
 ]
 requires-python = ">=3.11"  # the pinned numpy, SciPy, scikit-image and pandas need 3.11+

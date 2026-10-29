@@ -3,7 +3,7 @@
 | Document | Read it to |
 |---|---|
 | [`data.md`](data.md) | download the four datasets and the published MedSAM/LiteMedSAM weights, and arrange them |
-| [`reproduction.md`](reproduction.md) | run each stage (search, training, prediction, scoring, figures, paper), with its cost, the protocols, the determinism and the verification of this release |
+| [`reproduction.md`](reproduction.md) | run each stage (search, training, prediction, scoring, figures, paper), with its cost, the protocols and the determinism |
 | [`selected_hyperparameters.md`](selected_hyperparameters.md) | see the hyperparameters of the selected run of each of the 36 searches |
 | [`known_deviations.md`](known_deviations.md) | know every quirk of the experiments that the code keeps on purpose, with its evidence |
 
